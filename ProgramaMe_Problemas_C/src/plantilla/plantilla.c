@@ -10,7 +10,7 @@
 int main(void) {
     int cases, i;
 
-    scanf("%d", cases);
+    scanf("%d", &cases);
 
     for (i = 0; i < cases; i++) {
 
