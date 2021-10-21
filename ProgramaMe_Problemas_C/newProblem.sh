@@ -1,5 +1,5 @@
 #!/bin/sh
-BASELOCATION="src/dam/jorge/y2021/navidad/";
+BASELOCATION="src/dam/jorgeRe/y2021/navidad/";
 TEMPLATE="src/plantilla/plantilla.c";
 
 # Colors:
@@ -23,3 +23,6 @@ mkdir $BASELOCATION"p$problemNumber"_$problemName;
 cat $TEMPLATE >> $BASELOCATION"p$problemNumber"_$problemName/$problemName.c;
 touch $BASELOCATION"p$problemNumber"_$problemName/data.txt;
 touch $BASELOCATION"p$problemNumber"_$problemName/expected.txt;
+
+git add $BASELOCATION"p$problemNumber"_$problemName/*;
+git commit $BASELOCATION"p$problemNumber"_$problemName/* -m "Added";
