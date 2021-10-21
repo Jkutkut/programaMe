@@ -1,6 +1,6 @@
 #!/bin/sh
-DIRBASE="src/dam/jorge/y2021/navidad/p579_tareasFelipe/";
-EXER="tareaFelipe.c";
+DIRBASE="src/dam/jorgeRe/y2021/navidad/p580_FotoMafalda/";
+EXER="FotoMafalda.c";
 DATA="data.txt";
 EXPECTED="expected.txt";
 
