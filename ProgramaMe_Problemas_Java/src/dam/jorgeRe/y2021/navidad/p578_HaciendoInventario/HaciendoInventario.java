@@ -17,15 +17,23 @@ public class HaciendoInventario {
 //			return;
 //		}
 		
-		int cases = Integer.parseInt(sc.nextLine());
-		HashSet<String> h = new HashSet<String>();
-		
-		for (int i = 0; i < cases; i++) {
-			h.add(sc.nextLine().toLowerCase());
-//			System.out.println(h.toString());
+		int cases, i;
+		HashSet<String> h;
+		while(true) {
+			
+			cases = Integer.parseInt(sc.nextLine());
+			if (cases == 0) {
+				break;
+			}
+			
+			h  = new HashSet<String>();
+			
+			for (i = 0; i < cases; i++) {
+				h.add(sc.nextLine().toLowerCase());
+			}
+			
+			System.out.println(h.size());
 		}
-		
-		System.out.println(h.size());
 		sc.close();
 	}
 }

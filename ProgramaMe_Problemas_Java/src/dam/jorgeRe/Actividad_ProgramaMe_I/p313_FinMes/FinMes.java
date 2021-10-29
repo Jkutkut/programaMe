@@ -1,4 +1,4 @@
-package dam.jorge.p313_FinMes;
+package dam.jorgeRe.Actividad_ProgramaMe_I.p313_FinMes;
 
 import java.util.Scanner;
 

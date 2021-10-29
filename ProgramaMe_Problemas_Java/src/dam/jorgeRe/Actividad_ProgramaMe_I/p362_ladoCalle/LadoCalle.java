@@ -1,4 +1,4 @@
-package dam.jorge.p362_ladoCalle;
+package dam.jorgeRe.Actividad_ProgramaMe_I.p362_ladoCalle;
 
 import java.util.Scanner;
 

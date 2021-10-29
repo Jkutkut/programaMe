@@ -1,4 +1,4 @@
-package dam.jorge.p216_goteras;
+package dam.jorgeRe.Actividad_ProgramaMe_I.p216_goteras;
 
 import java.util.Scanner;
 

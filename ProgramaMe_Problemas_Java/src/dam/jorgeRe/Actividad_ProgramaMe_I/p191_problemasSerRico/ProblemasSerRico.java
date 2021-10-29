@@ -1,4 +1,4 @@
-package dam.jorge.p191_problemasSerRico;
+package dam.jorgeRe.Actividad_ProgramaMe_I.p191_problemasSerRico;
 
 import java.util.Scanner;
 

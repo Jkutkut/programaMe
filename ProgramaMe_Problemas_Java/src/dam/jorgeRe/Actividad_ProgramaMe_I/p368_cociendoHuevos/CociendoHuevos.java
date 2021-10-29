@@ -1,4 +1,4 @@
-package dam.jorge.p368_cociendoHuevos;
+package dam.jorgeRe.Actividad_ProgramaMe_I.p368_cociendoHuevos;
 
 import java.util.Scanner;
 

@@ -1,4 +1,4 @@
-package dam.jorge.p158_saltosMario;
+package dam.jorgeRe.Actividad_ProgramaMe_I.p158_saltosMario;
 
 //import java.io.File;
 //import java.io.FileNotFoundException;
@@ -29,14 +29,14 @@ public class SaltosMario {
 		int nJumps, jumpsUp, jumpsDown;
 		int prev, current;
 		
-		for (int i = 0; i < cases; i++) {
+		for (int i = 0, j; i < cases; i++) {
 			nJumps = sc.nextInt();
 			
 			jumpsUp = 0;
 			jumpsDown = 0;
 			
 			prev = sc.nextInt();
-			for (int j = 1; j < nJumps; j++) {
+			for (j = 1; j < nJumps; j++) {
 				current = sc.nextInt();
 				
 				if (prev < current) {

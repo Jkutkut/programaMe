@@ -1,4 +1,4 @@
-package dam.jorge.p371_AburrimientoSobremesas;
+package dam.jorgeRe.Actividad_ProgramaMe_I.p371_AburrimientoSobremesas;
 
 import java.util.Scanner;
 

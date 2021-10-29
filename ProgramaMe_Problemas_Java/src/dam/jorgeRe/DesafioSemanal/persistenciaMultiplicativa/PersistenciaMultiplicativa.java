@@ -1,4 +1,4 @@
-package programaMe.jkutkut.persistenciaMultiplicativa;
+package dam.jorgeRe.DesafioSemanal.persistenciaMultiplicativa;
 
 //import java.io.File;
 //import java.io.FileNotFoundException;

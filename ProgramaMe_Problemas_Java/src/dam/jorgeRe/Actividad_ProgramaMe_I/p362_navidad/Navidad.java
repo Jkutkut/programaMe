@@ -1,4 +1,4 @@
-package dam.jorge.p362_navidad;
+package dam.jorgeRe.Actividad_ProgramaMe_I.p362_navidad;
 
 import java.util.Scanner;
 
