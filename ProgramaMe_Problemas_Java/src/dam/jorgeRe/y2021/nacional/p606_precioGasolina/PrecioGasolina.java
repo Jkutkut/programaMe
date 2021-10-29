@@ -1,12 +1,22 @@
 package dam.jorgeRe.y2021.nacional.p606_precioGasolina;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 public class PrecioGasolina {
 	public static final int END = 0;
 	
 	public static void main(String[] args) {
-		Scanner sc = new Scanner(System.in);
+//		Scanner sc = new Scanner(System.in);
+		File f = new File("src/dam/jorgeRe/y2021/nacional/p606_precioGasolina/data.txt");
+		Scanner sc;
+		try {
+			sc = new Scanner(f);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+			return;
+		}
 		
 		int cases;
 		int current, prev, score, record = 0;
@@ -18,11 +28,14 @@ public class PrecioGasolina {
 				break;
 			}
 			score = 0;
+			record = 0;
 			
 			
 			prev = sc.nextInt();
-			while (cases-- > 0) {
+			while (cases-- > 1) {
 				current = sc.nextInt();
+				
+				System.out.println("Checking " + current);
 				
 				if (prev <= current) {
 					score++;
