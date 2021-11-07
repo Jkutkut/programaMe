@@ -1,21 +1,31 @@
 #!/bin/sh
 
-# Function to get the number of the problem
-getNumber() {
-    read -p "Enter the number of the problem: " problemId;
-    if [ -z "$problemId" ]; then
-        echo "Invalid number!"
-        getNumber
-    fi
+# Colors:
+NC='\033[0m' # No Color
+LBLUE='\033[1;34m';
+TITLE='\033[38;5;33m';
+
+# Function to ask something to the user.
+ask() {
+  question=$1;
+  textEnd=$2;
+  read -p "$(echo ${LBLUE}"$question"${NC} $textEnd) -> " askResponse;
+
+  if [ -z  "$askResponse" ]; then
+    ask "$question" "$textEnd";
+  else
+    echo $askResponse;
+  fi
 }
 
-# Function to get the name of the problem
+# Function to get the number of the problem.
+getNumber() {
+    echo $(ask "What is the number of the problem?" " ");
+}
+
+# Function to get the name of the problem.
 getName() {
-    read -p "Enter the name of the problem: " problemName;
-    if [ -z "$problemName" ]; then
-        echo "Invalid name!"
-        getName
-    fi
+    echo $(ask "Enter the name of the problem" "");
 }
 
 # Constants
@@ -27,11 +37,13 @@ currentDir=$(jq -r '.currentDir' $settingsFile);
 fullDirectory=$baseDir$currentDir;
 
 # get the number and the name of the problem
-getNumber;
-getName;
+problemId=$(getNumber);
+problemName=$(getName);
+
+problemDirectoryName=p$problemId"_"$problemName;
 
 # Ask if the user wants to cancel
-echo "You are about to create the problem:\n - ID: $problemId\n - Name: $problemName\n";
+echo "You are about to create the problem:\n - ID: $problemId\n - Name: $problemName\n - Directory: $fullDirectory$problemDirectoryName\n";
 
 read -p "Do you want to continue? (*/no) " answer;
 if [ "$answer" = "n" ] || [ "$answer" = "no" ]; then
@@ -40,4 +52,3 @@ if [ "$answer" = "n" ] || [ "$answer" = "no" ]; then
 fi
 
 # Create the problem directory
-echo "Yay! $problemName $problemId $baseDir$currentDir" 
