@@ -40,7 +40,7 @@ fullDirectory=$baseDir$currentDir;
 problemId=$(getNumber);
 problemName=$(getName);
 
-problemDirectoryName=p$problemId"_"$problemName;
+problemDirectoryName=p$problemId"_"$problemName"/";
 
 # Ask if the user wants to cancel
 echo "You are about to create the problem:\n - ID: $problemId\n - Name: $problemName\n - Directory: $fullDirectory$problemDirectoryName\n";
@@ -52,3 +52,20 @@ if [ "$answer" = "n" ] || [ "$answer" = "no" ]; then
 fi
 
 # Create the problem directory
+mkdir $fullDirectory$problemDirectoryName;
+
+# ask if the user wants to use a template
+read -p "Do you want to use a template? (c/java/no) " answer;
+if [ "$answer" = "c" ] || [ "$answer" = "C" ]; then
+    template=".c";
+elif [ "$answer" = "java" ] || [ "$answer" = "Java" ]; then
+    template=".java";
+else
+    # end the script
+    echo "Exiting...";
+    exit 0;
+fi
+
+mainName=$problemDirectoryName$template;
+
+echo$(./.settings/createProblem/template/getTemplate.sh $template) > $fullDirectory$problemDirectoryName$mainName;
