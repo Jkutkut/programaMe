@@ -68,4 +68,4 @@ fi
 
 mainName=$problemDirectoryName$template;
 
-echo$(./.settings/createProblem/template/getTemplate.sh $template) > $fullDirectory$problemDirectoryName$mainName;
+echo$(./.settings/createProblem/template/getTemplate.sh $template $problemDirectoryName) > $fullDirectory$problemDirectoryName$mainName;
