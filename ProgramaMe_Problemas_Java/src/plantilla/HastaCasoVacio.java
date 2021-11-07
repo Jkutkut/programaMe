@@ -10,12 +10,13 @@ public class HastaCasoVacio {
 		Scanner sc = new Scanner(System.in);
 		
 		int cases;
+		boolean running = true;
 		
-		while (true) {
+		while (running) {
 			cases = Integer.parseInt(sc.next());
 			
 			if (cases == END) {
-				break;
+				running = false;
 			}
 		}
 		
