@@ -1,6 +1,10 @@
 #!/bin/sh
 
 # Constants
+NC='\033[0m' # No Color
+LBLUE='\033[1;34m';
+TITLE='\033[38;5;33m';
+
 SETTINGS_FILE=".settings/settings.json";
 TEMPLATES_DIR=".settings/createProblem/template/";
 
