@@ -27,3 +27,9 @@ esac
 # Get all ids from json array separated by comma
 templateIds=$(jq -r '.templates[] | .id' $templateFile);
 
+title="${TITLE} ____  ____  _  _  ____  __     __  ____  ____  ____ 
+(_  _)(  __)( \/ )(  _ \(  )   / _\(_  _)(  __)/ ___)
+  )(   ) _) / \/ \ ) __// (_/\/    \ )(   ) _) \___ \\
+ (__) (____)\_)(_/(__)  \____/\_/\_/(__) (____)(____/${NC}";
+
+./.settings/createProblem/menuSelection.sh "$templateIds" "$title";
