@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/sh
 
 # * ***** COLORS *****
 NC='\033[0m' # No Color
@@ -36,20 +36,23 @@ init(){
     # variables
     titleH=4;
     titleSpace=2;
-    height=$(($(tput lines)-1-$titleH-$titleSpace-1));
+    consoleLines=$(tput lines);
 
-    echo "$title";
+    height=$(($consoleLines-1-$titleH-$titleSpace-1));
 
-     # Clear the terminal
-    for i in `seq 0 $(tput lines)`; do
-        printf "\n";
+    tput cup 0;
+    # Clear the terminal
+    for i in `seq 0 $consoleLines`; do
+        for j in `seq 0 $(tput cols)`; do
+            echo -n " ";
+        done;
     done
 
     # Set cursor on the top of the screen
     tput cup 0;
 
     # Show title
-    printf $title;
+    echo "$title"
 
     if [ ! $1 = "textmode" ]; then # If no textmode => option mode
       setterm -cursor off; # cursor_blink_off
@@ -58,26 +61,26 @@ init(){
       setterm -cursor on; # cursor_blink_on
       stty echo; # hide text typed
     fi
-
 }
 
 updateScreen(){
     updateType=$1;
     
     idx=0;
-
     # If updating all screen
     if [ "full" = $updateType ]; then
         for i in $(seq 0 $height); do
-            tput cup $(($titleH+$idx+$titleSpace));
+            tput cup $(($titleH+$titleSpace+$idx));
             index=$(( ($start+$i) % $repoL + 1));#Get the lenght of the element
-            text=$(getLine $data $index 1);
+            text=$(getLine "$data" $index 1);
 
-            if [ $i -eq $selected ]; then
-                setMessage $text 3 $sBG;
-            else
-                setMessage $text 3;
-            fi
+            # if [ $i -eq $selected ]; then
+            #     # setMessage "$text" "3" "$sBG";
+            #     setMessage "$text" "3";
+            # else
+            #     setMessage "$text" "3";
+            # fi
+            echo "linea $idx"
             idx=$(($idx+1));
         done
     # else # If updateType == normal
@@ -107,6 +110,7 @@ setMessage(){
         offs=$2;
     fi
     l=$(tput cols); # cols of the terminal
+    # echo "$l-${#1}-($offs)";
     gap=$(($l-${#1}-$offs)); # characters I can fit between the end of the message and the end of the terminal
     
     printf %${offs}s; # Print offset
@@ -115,11 +119,17 @@ setMessage(){
 }
 
 getLine(){
-    start=$2;
-    get=$3;
+    startLine=$2;
+    getAmount=$3;
+    endLine=$(($startLine+$getAmount));
+
+    # echo "$startLine, $getAmount"
+
     # echo $(tail -n +$start $1 | head -n $get);
-    echo "$start, $get, ";
-    # echo "$(echo $1 | tail -n +$start | head -n $get)";
+    echo "$(echo $1 | tail -n $startLine | head -n $getAmount)";
+
+    # echo "$(echo $data | cut -d " " -f $startLine-$endLine)";
+    
 }
 
 endCode(){
@@ -139,17 +149,16 @@ endCode(){
 # Show a list with the given data
 
 # *** VARIABLES ***
-title=$2;
-lines=$1; # Get the data from the argument
-linesL=$(echo $lines | wc -w); # Get the number of elements
+echo "Data\n$1\n$2";
+title=$(cat $1); # Get the title from the file
+data=$(cat $2); # Get the data from the file
 
 # *********** CODE ***********
 
 init "optionmode"; # Init zone
 trap 'init' WINCH # When window resized, update screen with the new size
 trap "endCode fail \"code force-ended\"" 2; # If code forced to end, run endCode first
-trap "endCode fail \"code failed to execute\"" 0; # If code failed to execute, run endCode before ending
-
+trap "endCode fail \"code failed to execute\"" 1; # If code failed to execute, run endCode before ending
 
 start=0;
 selected=0;
@@ -159,17 +168,17 @@ while true; do
     oldHeight=$height;
 
     # user key control
-    case $(getArrow) in # Get and analize the arrow input
-        EN) # If enter pressed, exit
-            break
-            ;;
-        UP) # If up arrow pressed
-            selected=$(($selected-1)); # Selector go up
-            ;;
-        DN) # If down arrow pressed
-            selected=$(($selected+1));
-            ;;
-    esac
+    # case $(getArrow) in # Get and analize the arrow input
+    #     EN) # If enter pressed, exit
+    #         break
+    #         ;;
+    #     UP) # If up arrow pressed
+    #         selected=$(($selected-1)); # Selector go up
+    #         ;;
+    #     DN) # If down arrow pressed
+    #         selected=$(($selected+1));
+    #         ;;
+    # esac
 
     # If selector out of screen (top)
     if [ $selected -eq -1 ]; then
@@ -202,3 +211,4 @@ done
 # tput cup $(($titleH+$titleSpace)); # Set cursor at initial position
 
 endCode "" "noOutput"; # ! DEBUG
+exit 0;
