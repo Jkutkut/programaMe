@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/sh
 
 # Constants
 NC='\033[0m' # No Color
@@ -7,6 +7,10 @@ TITLE='\033[38;5;33m';
 
 SETTINGS_FILE=".settings/settings.json";
 TEMPLATES_DIR=".settings/createProblem/template/";
+
+TITLE_FILE=".title.temp.txt";
+IDS_FILE=".ids.temp.txt";
+SELECTED_TEMPLATE_FILE=".selected.temp.txt";
 
 # Get template type
 templateType=$1;
@@ -31,9 +35,14 @@ esac
 # Get all ids from json array separated by comma
 templateIds=$(jq -r '.templates[] | .id' $templateFile);
 
-title="${TITLE} ____  ____  _  _  ____  __     __  ____  ____  ____ 
-(_  _)(  __)( \/ )(  _ \(  )   / _\(_  _)(  __)/ ___)
+echo "${TITLE} ____  ____  _  _  ____  __     __  ____  ____  ____
+(_  _)(  __)( \\/ )(  _ \(  )   / _\(_  _)(  __)/ ___)
   )(   ) _) / \/ \ ) __// (_/\/    \ )(   ) _) \___ \\
- (__) (____)\_)(_/(__)  \____/\_/\_/(__) (____)(____/${NC}";
+ (__) (____)\_)(_/(__)  \____/\_/\_/(__) (____)(____/${NC}" >> $TITLE_FILE;
 
-./.settings/createProblem/menuSelection.sh "$templateIds" "$title";
+echo "$templateIds" >> $IDS_FILE;
+
+echo "Creating selection menu";
+./.settings/createProblem/menuSelection.sh $TITLE_FILE $IDS_FILE $SELECTED_TEMPLATE_FILE;
+
+rm $TITLE_FILE $IDS_FILE;
