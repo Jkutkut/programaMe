@@ -119,19 +119,15 @@ updateScreen(){
     fi
 }
 
-setMessage(){
-    if [ $# -eq 1 ]; then # If no offset given, supose 0
-        offs=0;
-    else # If given, use it
-        offs=$2;
-    fi
-    l=$(tput cols); # cols of the terminal
-    # echo "$l-${#1}-($offs)";
-    gap=$(($l-${#1}-$offs)); # characters I can fit between the end of the message and the end of the terminal
-    
-    printf %${offs}s; # Print offset
-    printf $3$1${NC}; # print message with the color given
-    printf %${gap}s; # print the end of the line with blank characters
+# Formats the given line with (optional) format.
+# Inputs:
+#   $1: line to print
+#   $2: (optional) format of the content
+formatLine() {
+    l=$1; # Get the line
+    bg=$2;
+
+    printf "  - $bg$l${NC}";
 }
 
 getLine(){
