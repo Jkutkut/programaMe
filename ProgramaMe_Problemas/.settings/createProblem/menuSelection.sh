@@ -38,29 +38,20 @@ init(){
     titleSpace=2;
     consoleLines=$(tput lines);
 
-    height=$(($consoleLines-1-$titleH-$titleSpace-1));
+    height=$(($(tput lines)-1-$titleH-$titleSpace-1));
 
-    tput cup 0;
     # Clear the terminal
-    for i in `seq 0 $consoleLines`; do
-        for j in `seq 0 $(tput cols)`; do
-            echo -n " ";
-        done;
+    for i in `seq 1 $(tput lines)`; do
+        echo "";
     done
 
-    # Set cursor on the top of the screen
-    tput cup 0;
+    setCursorLocation "start"; # Set cursor on the top of the screen
 
     # Show title
-    echo "$title"
+    printf "$title";
 
-    if [ ! $1 = "textmode" ]; then # If no textmode => option mode
-      setterm -cursor off; # cursor_blink_off
-      stty -echo; # hide text typed
-    else
-      setterm -cursor on; # cursor_blink_on
-      stty echo; # hide text typed
-    fi
+    setterm -cursor off; # cursor_blink_off
+    stty -echo; # hide text typed
 }
 
 clearTerminal() {
@@ -71,8 +62,8 @@ clearTerminal() {
     fi
 
     tput cup $start; # Set cursor on the start line
-    for i in `seq 0 $(($(tput lines) - $start))`; do
-        tput cup $(($i + $start));
+    for i in `seq $start $(tput lines)`; do
+        setCursorLocation $i;
         for j in `seq 0 $(tput cols)`; do
             echo -n " ";
         done;
@@ -82,40 +73,23 @@ clearTerminal() {
 updateScreen(){
     updateType=$1;
     
-    idx=0;
     # If updating all screen
     if [ "full" = $updateType ]; then
-        for i in $(seq 0 $height); do
-            tput cup $(($titleH+$titleSpace+$idx));
-            index=$(( ($start+$i) % $repoL + 1));#Get the lenght of the element
-            text=$(getLine "$data" $index 1);
+        clearTerminal $(($titleH+$titleSpace));
+        for idx in $(seq 0 $dataL); do
+            text=$(getLine "$data" $idx 0);
 
-            # if [ $i -eq $selected ]; then
-            #     # setMessage "$text" "3" "$sBG";
-            #     setMessage "$text" "3";
-            # else
-            #     setMessage "$text" "3";
-            # fi
-            echo "linea $idx"
-            idx=$(($idx+1));
+            tput cup $(($titleH+$titleSpace+$idx));
+
+            if [ $idx -eq $selected ]; then
+                formatLine "$text" "$sBG";
+            else
+                formatLine "$text";
+            fi
+
+            idx=$(($idx + 1));
         done
     # else # If updateType == normal
-    #     for i in $(seq -1 1); do
-    #         line=$(($titleH+$titleSpace+$selected+$i));
-    #         if [ $(($selected+$i)) -gt $height ] || [ $(($selected+$i)) -eq -1 ]; then 
-    #             continue;
-    #         fi
-    #         tput cup $line;
-    #         index=$(( ($start+$selected+$i) % $repoL + 1));#Get the lenght of the element
-    #         text=$(getLine temp.txt $index 1);
-            
-    #         if [ $i -eq 0 ]; then
-    #             setMessage $text 3 $sBG;
-    #         else
-    #             setMessage $text 3;
-    #         fi
-    #         idx=$(($idx+1));
-    #     done
     fi
 }
 
@@ -203,10 +177,12 @@ setCursorLocation() {
 echo "Data\n$1\n$2";
 title=$(cat $1); # Get the title from the file
 data=$(cat $2); # Get the data from the file
+dataL=$(( $(cat $2 | wc -l) - 1)); # Get the amount of lines of the data
+
 
 # *********** CODE ***********
 
-init "optionmode"; # Init zone
+init; # Init zone
 trap 'init' WINCH # When window resized, update screen with the new size
 trap "endCode fail \"code force-ended\"" 2; # If code forced to end, run endCode first
 trap "endCode fail \"code failed to execute\"" 1; # If code failed to execute, run endCode before ending
@@ -214,8 +190,8 @@ trap "endCode fail \"code failed to execute\"" 1; # If code failed to execute, r
 start=0;
 selected=0;
 updateScreen "full";
-while true; do
-    break;
+while false; do
+# while true; do
     oldHeight=$height;
 
     # user key control
@@ -232,34 +208,33 @@ while true; do
     # esac
 
     # If selector out of screen (top)
-    if [ $selected -eq -1 ]; then
-        selected=0; # Selector now on top
-        start=$(($start-1)); # Move all repos down
-        if [ $start -eq -1 ]; then # If out of index
-            start=$(($repoL - 1)); # Set index to the last one
-        fi
-    # else, if bottom is reached (bottom)
-    elif [ $selected -ge $(($height+1)) ]; then
-        selected=$height;
-        start=$(($start+1)); # Move all repos up
-        if [ $start -ge $(($repoL+1)) ]; then
-            start=0;
-        fi
-    else # if correct position
-        if [ $oldHeight -eq $height ]; then # If no change on the height of the screen
-            updateScreen "normal";
-            continue;
-        else # else, update the "full" screen with the new height
-            init "list"; # Clear screen, get new height based on the title, titleGap and print it with the fixed position
-        fi
-    fi
-    updateScreen "full";
+    # if [ $selected -eq -1 ]; then
+    #     selected=0; # Selector now on top
+    #     start=$(($start-1)); # Move all repos down
+    #     if [ $start -eq -1 ]; then # If out of index
+    #         start=$(($dataL - 1)); # Set index to the last one
+    #     fi
+    # # else, if bottom is reached (bottom)
+    # elif [ $selected -ge $(($height + 1)) ]; then
+    #     selected=$height;
+    #     start=$(($start+1)); # Move all repos up
+    #     if [ $start -ge $(($dataL + 1)) ]; then
+    #         start=0;
+    #     fi
+    # else # if correct position
+    #     if [ $oldHeight -eq $height ]; then # If no change on the height of the screen
+    #         updateScreen "normal";
+    #         continue;
+    #     else # else, update the "full" screen with the new height
+    #         init "list"; # Clear screen, get new height based on the title, titleGap and print it with the fixed position
+    #     fi
+    # fi
+    # updateScreen "full";
 done
 
-# At this point, everything should be ready to clone:
 
-# init "textmode"; # Init zone
-# tput cup $(($titleH+$titleSpace)); # Set cursor at initial position
-
-endCode "" "noOutput"; # ! DEBUG
+# * END CODE LOGIC *
+setCursorLocation "end"; # Set cursor on the last row.
+setterm -cursor on; # cursor_blink_on
+stty echo; # Show input text again
 exit 0;
