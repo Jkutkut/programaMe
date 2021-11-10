@@ -63,6 +63,22 @@ init(){
     fi
 }
 
+clearTerminal() {
+    # Clear the terminal from the line $start
+    start=0;
+    if [ ! -z $1 ]; then # If start is defined, update it
+        start=$1;
+    fi
+
+    tput cup $start; # Set cursor on the start line
+    for i in `seq 0 $(($(tput lines) - $start))`; do
+        tput cup $(($i + $start));
+        for j in `seq 0 $(tput cols)`; do
+            echo -n " ";
+        done;
+    done
+}
+
 updateScreen(){
     updateType=$1;
     
