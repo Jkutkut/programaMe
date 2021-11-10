@@ -130,18 +130,19 @@ formatLine() {
     printf "  - $bg$l${NC}";
 }
 
+# Gets the nth line(s) of the given multiline argument
+# Inputs:
+#   $1: Data to get the information (normally the result of using "cat $FILENAME").
+#   $2: Start line (0 based).
+#   $3: Amount of extra lines desired (0 to get a single line, 1 to get 1+1 lines...).
+# Returns:
+#   The content required on a single line without any format.
 getLine(){
-    startLine=$2;
-    getAmount=$3;
-    endLine=$(($startLine+$getAmount));
+    startLine=$(($2 + 1));
+    amount=$3;
+    endLine=$(($startLine+$amount));
 
-    # echo "$startLine, $getAmount"
-
-    # echo $(tail -n +$start $1 | head -n $get);
-    echo "$(echo $1 | tail -n $startLine | head -n $getAmount)";
-
-    # echo "$(echo $data | cut -d " " -f $startLine-$endLine)";
-    
+    echo "$(echo $data | cut -d " " -f $startLine-$endLine)";
 }
 
 endCode(){
