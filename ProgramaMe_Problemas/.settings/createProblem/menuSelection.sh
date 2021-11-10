@@ -158,6 +158,44 @@ endCode(){
     exit 1;
 }
 
+# Set the cursor on the given location in the terminal:
+# Inputs:
+#   $1: The desired row. Possible inputs:
+#       - "start": The first line of the terminal
+#       - "menu": Location in the menu.
+#                 This option takes an additional argument ($2) with the index desired. This makes the $2 argument the $3.
+#       - "end": End of the console.
+#       - any: The desired number of the row.
+#   $2: (optional) the desired column. If not given, the default value is 0.
+setCursorLocation() {
+    # Get columns
+    col=0;
+    if [ ! -z $2 ]; then # If columns given
+        col=$2;
+    fi
+
+    # Get the row based on the value given
+    case $1 in
+        start)
+            row=1;
+            ;;
+        menu)
+            row=$(( $titleH + $titleSpace + $2));
+            
+            if [ ! -z col ]; then # If 3º argument given, this is the desired column
+                col=$3;
+            fi
+            ;;
+        end)
+            row=$(($(tput lines) - 1));
+            ;;
+        *) # Else, the value given should be the desired row
+            row=$1;
+            ;;
+    esac
+
+    tput cup $row $col;
+}
 
 # Show a list with the given data
 
