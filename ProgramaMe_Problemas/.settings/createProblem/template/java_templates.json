@@ -7,13 +7,40 @@
 
     "templates": [
         {
-            "id": "template 1"
+            "id": "template_1"
         },
         {
-            "id": "template 2"
+            "id": "template_2"
         },
         {
-            "id": "template 3"
+            "id": "template_3"
+        },
+        {
+            "id": "template_4"
+        },
+        {
+            "id": "template_5"
+        },
+        {
+            "id": "template_6"
+        },
+        {
+            "id": "template_7"
+        },
+        {
+            "id": "template_8"
+        },
+        {
+            "id": "template_9"
+        },
+        {
+            "id": "template_10"
+        },
+        {
+            "id": "template_11"
+        },
+        {
+            "id": "template_12"
         }
     ]
 }
