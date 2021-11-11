@@ -249,5 +249,4 @@ setCursorLocation "end"; # Set cursor on the last row.
 setterm -cursor on; # cursor_blink_on
 stty echo; # Show input text again
 
-selectedOption=$(getLine "$data" $selected 0); # Get the selected option
-echo "Selected: $selectedOption -> $(( $selected + $start ))"; 
+echo $(getLine "$data" $selected 0) >> $3; # Get the selected option and store it in the file
