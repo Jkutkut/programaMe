@@ -188,8 +188,8 @@ dataL=$(( $(cat $2 | wc -l) - 1)); # Get the amount of lines of the data
 
 init; # Init zone
 trap 'init' WINCH # When window resized, update screen with the new size
-trap "endCode fail \"code force-ended\"" 2; # If code forced to end, run endCode first
-trap "endCode fail \"code failed to execute\"" 1; # If code failed to execute, run endCode before ending
+trap "endCode \"code force-ended\"" 2; # If code forced to end, run endCode first
+trap "endCode \"code failed to execute\"" 1; # If code failed to execute, run endCode before ending
 
 start=0;
 selected=0;
