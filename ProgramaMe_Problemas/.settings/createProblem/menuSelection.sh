@@ -39,16 +39,17 @@ init(){
     consoleLines=$(tput lines);
 
     height=$(($(tput lines)-1-$titleH-$titleSpace-1));
+    
+    # get the max(height, dataL)
+    menuH=$(($height>$dataL ? $dataL : $height));
 
     # Clear the terminal
-    for i in `seq 1 $(tput lines)`; do
-        echo "";
-    done
+    clearTerminal;
 
     setCursorLocation "start"; # Set cursor on the top of the screen
 
     # Show title
-    printf "$title";
+    # printf "$title";
 
     setterm -cursor off; # cursor_blink_off
     stty -echo; # hide text typed
