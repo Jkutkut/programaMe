@@ -133,7 +133,8 @@ endCode(){
     if [ ! "$1" = "noOutput" ]; then # if no "no output" given, give output
         echo "\n${RED}~~~~~~~~  ERROR ~~~~~~~~\n$1${NC}";
     fi
-    exit 1;
+    running=false;
+    # exit 1;
 }
 
 # Set the cursor on the given location in the terminal:
@@ -193,23 +194,29 @@ trap "endCode \"code failed to execute\"" 1; # If code failed to execute, run en
 
 start=0;
 selected=0;
-updateScreen "full";
-while false; do
-# while true; do
-    oldHeight=$height;
+running=true;
+update=true;
+while $running; do
+
+    if $update; then
+        updateScreen "full";
+        update=false;
+    fi
 
     # user key control
-    # case $(getArrow) in # Get and analize the arrow input
-    #     EN) # If enter pressed, exit
-    #         break
-    #         ;;
-    #     UP) # If up arrow pressed
-    #         selected=$(($selected-1)); # Selector go up
-    #         ;;
-    #     DN) # If down arrow pressed
-    #         selected=$(($selected+1));
-    #         ;;
-    # esac
+    case $(getArrow) in # Get and analize the arrow input
+        EN) # If enter pressed, exit
+            break
+            ;;
+        UP) # If up arrow pressed
+            selected=$(($selected-1)); # Selector go up
+            update=true;
+            ;;
+        DN) # If down arrow pressed
+            selected=$(($selected+1));
+            update=true;
+            ;;
+    esac
 
     # If selector out of screen (top)
     # if [ $selected -eq -1 ]; then
@@ -241,4 +248,6 @@ done
 setCursorLocation "end"; # Set cursor on the last row.
 setterm -cursor on; # cursor_blink_on
 stty echo; # Show input text again
-exit 0;
+
+selectedOption=$(getLine "$data" $selected 0); # Get the selected option
+echo "Selected: $selectedOption -> $(( $selected + $start ))"; 
