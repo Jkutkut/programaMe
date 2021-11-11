@@ -130,10 +130,8 @@ endCode(){
     setterm -cursor on; # cursor_blink_on
     stty echo; # Show input text again
 
-    if [ ! "$2" = "noOutput" ]; then # if no "no output" given, give output
-      if [ $1 = "fail" ]; then
-          echo "\n${RED}~~~~~~~~  ERROR ~~~~~~~~\n$2${NC}";
-      fi
+    if [ ! "$1" = "noOutput" ]; then # if no "no output" given, give output
+        echo "\n${RED}~~~~~~~~  ERROR ~~~~~~~~\n$1${NC}";
     fi
     exit 1;
 }
