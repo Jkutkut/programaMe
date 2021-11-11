@@ -62,12 +62,17 @@ clearTerminal() {
         start=$1;
     fi
 
+    emptyLine="";
+    c=0;
+    while [ $c -lt $(tput cols) ]; do
+        emptyLine=" $emptyLine";
+        c=$(( $c + 1 ));
+    done
+
     tput cup $start; # Set cursor on the start line
     for i in `seq $start $(tput lines)`; do
         setCursorLocation $i;
-        for j in `seq 0 $(tput cols)`; do
-            echo -n " ";
-        done;
+        printf "$emptyLine";
     done
 }
 
